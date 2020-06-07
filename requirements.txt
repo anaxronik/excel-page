@@ -1,20 +1,19 @@
-webpack (imports / exports)
-    Babel - компилятор в старые версии
-    scss - препроцессор
-    Eslint
-    2 режима работы
-        -Dev
-          Dev server, SourceMaps, Eslint, Not Minified JS & CSS
-        -Prod
+Webpack (imports/exports)
+	Babel
+	Scss
+	2 Modes
+		- Dev
+			Dev Server, SourceMaps, Eslint, Not Minified JS & CSS
+		- Prod
+			Minified Code
+Git
 
-Git - система контроля версий
+	Production
+		2.0.0
+		0 ---------------
+	Development
+		2.0.2
+		1 -----------------
 
-версии продукта
-    Production
-        1.0.0
-        0. -------
 
-    Development
-        1.0.1
-        1. --------
-        2. --------__ => Pull Request => Merge 
+
