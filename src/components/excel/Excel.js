@@ -1,3 +1,5 @@
+import { $ } from "../../core/dom"; //библиотека для создания html елементов
+
 export class Excel {
   constructor(selector, options) {
     this.$element = document.querySelector(selector);
@@ -5,12 +7,16 @@ export class Excel {
   }
 
   getRoot() {
-    const $root = document.createElement("div");
+    const $rootElement = $.create("div", "excel");
+
     this.components.forEach((Component) => {
-      const component = new Component();
-      $root.insertAdjacentHTML('beforeend', component.toHTML())
+      const $element = $.create("div", Component.className);
+
+      const component = new Component($element); // создаем наш элемент и передаем в него название родительского div
+      $element.innerHTML = component.toHTML(); // получем html нашего элемента
+      $rootElement.append($element); // складываем все во внешний div
     });
-    return $root;
+    return $rootElement;
   }
 
   render() {
