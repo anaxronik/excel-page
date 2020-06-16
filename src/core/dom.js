@@ -41,6 +41,10 @@ class Dom {
   on(eventType, callback) {
     this.$element.addEventListener(eventType, callback)
   }
+
+  off(eventType, callback) {
+    this.$element.removeEventListener(eventType, callback)
+  }
 }
 
 export function $(selector) {

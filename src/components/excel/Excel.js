@@ -1,4 +1,4 @@
-import { $ } from "@core/dom";
+import {$} from "@core/dom";
 
 export class Excel {
   constructor(selector, options) {
@@ -12,6 +12,10 @@ export class Excel {
     this.components = this.components.map((Component) => {
       const $el = $.create("div", Component.className);
       const component = new Component($el);
+      // DEBUG для использования через консоль браузера
+      if (component.name) {
+        window['c' + component.name] = component
+      }
       $el.html(component.toHTML());
       $rootElement.append($el);
       return component;
