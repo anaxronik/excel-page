@@ -23,10 +23,6 @@ class Dom {
     return this;
   }
 
-  on() {
-    // метод для обработки событий
-  }
-
   append(node) {
     // метод для добавления элементов в указанный элемент
     if (node instanceof Dom) {
@@ -40,6 +36,10 @@ class Dom {
     }
 
     return this;
+  }
+
+  on(eventType, callback) {
+    this.$element.addEventListener(eventType, callback)
   }
 }
 
