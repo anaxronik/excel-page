@@ -31,7 +31,7 @@ export class Table extends ExcelComponent {
         document.onmousemove = e => {
           const delta = e.pageX - coords.right
           newSizeElement = coords.width + delta
-          $parentElement.$element.style.width = newSizeElement + 'px'
+          $parentElement.css({width: newSizeElement + 'px'})
         }
       }
 
@@ -41,7 +41,7 @@ export class Table extends ExcelComponent {
         document.onmousemove = e => {
           const delta = e.pageY - coords.bottom
           const value = coords.height + delta
-          $parentElement.$element.style.height = value + 'px'
+          $parentElement.css({height: value + 'px'})
         }
       }
 
