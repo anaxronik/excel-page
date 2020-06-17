@@ -17,12 +17,12 @@ export class Table extends ExcelComponent {
 
   onMousedown(event) {
     this.isMouseDown = true
-    console.log('onMousedown(event)')
+    console.log('onMousedown(event)', event.target.dataset)
   }
 
   onMouseup(event) {
     this.isMouseDown = false
-    console.log('onMouseup(event)')
+    console.log('onMouseup(event):')
   }
 
   onMousemove(event) {
