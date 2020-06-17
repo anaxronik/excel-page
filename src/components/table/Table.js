@@ -27,16 +27,17 @@ export class Table extends ExcelComponent {
 
       if (event.target.dataset.resize === 'col') {
         // horizontal column resizing
+        document.body.style.cursor = 'col-resize'
         document.onmousemove = e => {
           const delta = e.pageX - coords.right
           newSizeElement = coords.width + delta
           $parentElement.$element.style.width = newSizeElement + 'px'
-          document.body.style.cursor = 'col-resize'
         }
       }
 
       if (event.target.dataset.resize === 'row') {
         // vertical row resizing
+        document.body.style.cursor = 'row-resize'
         document.onmousemove = e => {
           const delta = e.pageY - coords.bottom
           const value = coords.height + delta
