@@ -24,6 +24,7 @@ export class Table extends ExcelComponent {
       const coords = $parentElement.getCoords()
       const index = $parentElement.$element.dataset.col
       let newSizeElement
+      $resizeElement.css({opacity: 1})
 
       if (event.target.dataset.resize === 'col') {
         // horizontal column resizing
@@ -50,6 +51,7 @@ export class Table extends ExcelComponent {
         document.querySelectorAll(`[data-col="${index}"]`)
           .forEach(el => el.style.width = newSizeElement + 'px')
         document.body.style.cursor = ''
+        $resizeElement.css({opacity: 0})
       }
     }
   }
