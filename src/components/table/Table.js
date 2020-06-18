@@ -23,35 +23,47 @@ export class Table extends ExcelComponent {
       const $parentElement = $resizeElement.closest('[data-type="resizable"]')
       const coords = $parentElement.getCoords()
       const index = $parentElement.$element.dataset.col
-      let newSizeElement
+      const resizeType = event.target.dataset.resize
+      let newWidth
+
       $resizeElement.css({opacity: 1})
 
-      if (event.target.dataset.resize === 'col') {
+      if (resizeType === 'col') {
         // horizontal column resizing
         document.body.style.cursor = 'col-resize'
+        $resizeElement.css({bottom: '-5000px'})
         document.onmousemove = e => {
           const delta = e.pageX - coords.right
-          newSizeElement = coords.width + delta
-          $parentElement.css({width: newSizeElement + 'px'})
+          newWidth = coords.width + delta
+          $parentElement.css({width: newWidth + 'px'})
         }
       }
 
-      if (event.target.dataset.resize === 'row') {
+      if (resizeType === 'row') {
         // vertical row resizing
         document.body.style.cursor = 'row-resize'
+        $resizeElement.css({right: '-5000px'})
         document.onmousemove = e => {
           const delta = e.pageY - coords.bottom
-          const value = coords.height + delta
-          $parentElement.css({height: value + 'px'})
+          const newHeight = coords.height + delta
+          $parentElement.css({height: newHeight + 'px'})
         }
       }
 
       document.onmouseup = () => {
         document.onmousemove = null
-        document.querySelectorAll(`[data-col="${index}"]`)
-          .forEach(el => el.style.width = newSizeElement + 'px')
         document.body.style.cursor = ''
         $resizeElement.css({opacity: 0})
+        $resizeElement.css({right: '0px', bottom: '0px',})
+
+        if (resizeType === 'col') {
+          document.querySelectorAll(`[data-col="${index}"]`)
+            .forEach(el => el.style.width = newWidth + 'px')
+          $resizeElement.css({right: '0px'})
+        }
+        if (resizeType === 'row') {
+          $resizeElement.css({bottom: '0px',})
+        }
       }
     }
   }

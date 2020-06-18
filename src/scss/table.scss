@@ -61,38 +61,40 @@
 
 
     &.selected {
-      border: none;
-      outline: 2px solid #3c74ff;
+      border: 2px solid #3c74ff;
+      outline: none;
       z-index: 2;
     }
   }
 
-  .col-resize {
+  .col-resize, .row-resize {
     background-color: $resize-color;
-    width: $resize-width;
     position: absolute;
-    right: 0;
-    bottom: 0;
-    top: 0;
     opacity: 0;
 
     &:hover {
-      opacity: 1;
+      opacity: 1 !important;
+    }
+  }
+
+  .col-resize {
+    width: $resize-width;
+    top: 0;
+    right: 0;
+    bottom: 0;
+
+    &:hover {
       cursor: col-resize;
     }
   }
 
   .row-resize {
-    background-color: $resize-color;
     height: $resize-width;
-    position: absolute;
-    right: 0;
     left: 0;
     bottom: 0;
-    opacity: 0;
+    right: 0;
 
     &:hover {
-      opacity: 1;
       cursor: row-resize;
     }
   }
