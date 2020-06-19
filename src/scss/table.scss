@@ -25,6 +25,7 @@
     background: $color_grey;
     border-top: none;
     color: $color_grey_dark;
+    position: relative;
   }
 
   .row-data {
@@ -43,6 +44,7 @@
     border-left: 0;
     height: 100%;
     color: $color_grey_dark;
+    position: relative;
   }
 
   .cell {
@@ -59,10 +61,41 @@
 
 
     &.selected {
-      border: none;
-      outline: 2px solid #3c74ff;
+      border: 2px solid #3c74ff;
+      outline: none;
       z-index: 2;
     }
   }
 
+  .col-resize, .row-resize {
+    background-color: $resize-color;
+    position: absolute;
+    opacity: 0;
+
+    &:hover {
+      opacity: 1 !important;
+    }
+  }
+
+  .col-resize {
+    width: $resize-width;
+    top: 0;
+    right: 0;
+    bottom: 0;
+
+    &:hover {
+      cursor: col-resize;
+    }
+  }
+
+  .row-resize {
+    height: $resize-width;
+    left: 0;
+    bottom: 0;
+    right: 0;
+
+    &:hover {
+      cursor: row-resize;
+    }
+  }
 }
