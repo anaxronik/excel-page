@@ -11,8 +11,9 @@
   .label {
     color: grey;
     font-size: 28px;
-    width: $info_cell_width;
+    min-width: $info_cell_width;
     border-right: 1px solid $border_color;
+    border-left: 1px solid $border_color;
     text-align: center;
     font-style: italic;
   }
@@ -25,7 +26,5 @@
     margin: 3px;
     justify-content: center;
     padding-top: 3px;
-    // padding-left: 10px;
-    margin-left: 5px;
   }
 }
