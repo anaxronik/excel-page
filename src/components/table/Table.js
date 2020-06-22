@@ -18,6 +18,11 @@ export class Table extends ExcelComponent {
   }
 
   onMousedown(event) {
+    if (event.target.dataset.type === 'cell'){
+      const $targetCell = $(event.target)
+      this.selection.select($targetCell)
+      }
+
     if (event.target.dataset.resize) {
       // при нажатии на ресайзер
       const $resizeElement = $(event.target)
