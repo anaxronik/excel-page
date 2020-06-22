@@ -3,8 +3,8 @@ const CODES = {
   Z: 90
 }
 
-function createCell(_, index) {
-  return `<div class="cell" contenteditable data-col="${index}"></div>`
+function createCell(rowNumber, colNumber) {
+  return `<div class="cell" contenteditable data-col="${colNumber}" data-id="${rowNumber}:${colNumber}"></div>`
 }
 
 function createColumn(col, index) {
@@ -45,12 +45,12 @@ export function createTable(rowsCount = 15) {
   rows.push(createRow(null, cols))
 
   // создание остальных ячеек
-  for (let i = 0; i < rowsCount; i++) {
+  for (let row = 0; row < rowsCount; row++) {
     const cols = new Array(colsCount)
       .fill('')
-      .map(createCell)
+      .map((_, col)=>createCell(row, col))
       .join('')
-    rows.push(createRow(i + 1, cols))
+    rows.push(createRow(row + 1, cols))
   }
 
   return rows.join('')

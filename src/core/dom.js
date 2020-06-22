@@ -61,6 +61,18 @@ class Dom {
         this.$element.style[key] = styles[key]
       })
   }
+
+  find(selector){
+    return $(this.$element.querySelector(selector))
+  }
+
+  addClass(className){
+    this.$element.classList.add(className)
+  }
+
+  removeClass(className){
+    this.$element.classList.remove(className)
+  }
 }
 
 export function $(selector) {

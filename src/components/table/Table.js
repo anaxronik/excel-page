@@ -1,6 +1,7 @@
-import {ExcelComponent} from "@core/ExcelComponent";
-import {createTable} from "@/components/table/table.template";
-import {$} from "@core/dom";
+import { ExcelComponent } from "@core/ExcelComponent";
+import { createTable } from "@/components/table/table.template";
+import { $ } from "@core/dom";
+import { TableSelection } from "./TableSelection";
 
 export class Table extends ExcelComponent {
   static className = "excel__table";
@@ -57,7 +58,8 @@ export class Table extends ExcelComponent {
         $resizeElement.css({right: '0px', bottom: '0px',})
 
         if (resizeType === 'col') {
-          document.querySelectorAll(`[data-col="${index}"]`)
+          document
+            .querySelectorAll(`[data-col="${index}"]`)
             .forEach(el => el.style.width = newWidth + 'px')
           $resizeElement.css({right: '0px'})
         }
@@ -66,5 +68,15 @@ export class Table extends ExcelComponent {
         }
       }
     }
+  }
+
+  prepare() {
+    this.selection = new TableSelection()
+  }
+
+  init() {
+    super.init();
+    const $cell = this.$root.find('[data-id="0:0"]')
+    this.selection.select($cell)
   }
 }
