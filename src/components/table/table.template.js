@@ -1,31 +1,33 @@
 const CODES = {
   A: 65,
-  Z: 90
+  Z: 90,
 }
 
-function createCell(_, index) {
-  return `<div class="cell" contenteditable data-col="${index}"></div>`
+function createCell(rowNumber, colNumber) {
+  return `<div 
+       class="cell" 
+       contenteditable 
+       data-type="cell" 
+       data-col="${colNumber}" 
+       data-id="${rowNumber}:${colNumber}"
+    ></div>`
 }
 
 function createColumn(col, index) {
-  return (
-    `<div class="column" data-type="resizable" data-col="${index}"> 
+  return `<div class="column" data-type="resizable" data-col="${index}"> 
         ${col}
         <div class="col-resize"  data-resize="col"></div>
     </div>`
-  )
 }
 
 function createRow(index, content) {
-  return (
-    `<div class="row" data-type="resizable">
+  return `<div class="row" data-type="resizable">
       <div class="row-info">
-        ${index ? index : ''}
-        ${index ? '<div class="row-resize" data-resize="row"></div>' : ''}
+        ${index ? index : ""}
+        ${index ? '<div class="row-resize" data-resize="row"></div>' : ""}
       </div>
       <div class="row-data">${content}</div>
     </div>`
-  )
 }
 
 function createChar(_, index) {
@@ -38,20 +40,20 @@ export function createTable(rowsCount = 15) {
 
   // создание первой строки с именами колонок
   const cols = new Array(colsCount)
-    .fill('')
+    .fill("")
     .map(createChar)
     .map(createColumn)
-    .join('')
+    .join("")
   rows.push(createRow(null, cols))
 
   // создание остальных ячеек
-  for (let i = 0; i < rowsCount; i++) {
+  for (let row = 0; row < rowsCount; row++) {
     const cols = new Array(colsCount)
-      .fill('')
-      .map(createCell)
-      .join('')
-    rows.push(createRow(i + 1, cols))
+      .fill("")
+      .map((_, col) => createCell(row, col))
+      .join("")
+    rows.push(createRow(row + 1, cols))
   }
 
-  return rows.join('')
+  return rows.join("")
 }
