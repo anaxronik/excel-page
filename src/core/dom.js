@@ -83,6 +83,27 @@ class Dom {
       return id
     }
   }
+
+  text(text) {
+    // если передан параметр назначет содержимое элемента
+    if (typeof text === "string") {
+      this.$element.textContent = text
+      return this
+    }
+    // если параметр не пердан
+    // если элемент является инпутом
+    if (this.$element.tagName.toLowerCase() === "input") {
+      return this.$element.value.trim()
+    }
+    // в остальных случаях возвращет содержимое элемента
+    return this.$element.textContent.trim()
+  }
+
+  // метод для назначения фокуса на ячейку
+  focus() {
+    this.$element.focus()
+    return this
+  }
 }
 
 export function $(selector) {

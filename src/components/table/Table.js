@@ -3,14 +3,16 @@ import { createTable } from "@/components/table/table.template"
 import { $ } from "@core/dom"
 import { TableSelection } from "./TableSelection"
 import { range } from "@core/utils"
+import { nextSelector } from "./table.functions"
 
 export class Table extends ExcelComponent {
   static className = "excel__table"
 
-  constructor($root) {
+  constructor($root, options) {
     super($root, {
       name: "Table",
-      listeners: ["mousedown"],
+      listeners: ["mousedown", "keydown", "input"],
+      ...options,
     })
   }
 
@@ -37,7 +39,7 @@ export class Table extends ExcelComponent {
         const $cells = ids.map((id) => this.$root.find(`[data-id="${id}"]`))
         this.selection.selectGroup($cells)
       } else {
-        this.selection.select($targetCell)
+        this.selectCell($targetCell)
       }
     }
 
@@ -101,6 +103,43 @@ export class Table extends ExcelComponent {
   init() {
     super.init()
     const $cell = this.$root.find('[data-id="0:0"]')
+    this.selectCell($cell)
+
+    // событие ввода текста в формуле
+    this.$on("formula:input", (text) => {
+      this.selection.currentCell.text(text)
+    })
+
+    this.$on("formula:done", () => {
+      this.selection.currentCell.focus()
+    })
+  }
+
+  selectCell($cell) {
     this.selection.select($cell)
+    this.$emit("table:select", $cell)
+  }
+
+  onKeydown(event) {
+    const keys = [
+      "Enter",
+      "Tab",
+      "ArrowLeft",
+      "ArrowRight",
+      "ArrowDown",
+      "ArrowUp",
+    ]
+    const key = event.key
+
+    if (keys.includes(key) && !event.shiftKey) {
+      event.preventDefault()
+      const id = this.selection.currentCell.id(true)
+      const $nextCell = this.$root.find(nextSelector(key, id))
+      this.selectCell($nextCell)
+    }
+  }
+
+  onInput(event) {
+    this.$emit("table:input", $(event.target))
   }
 }

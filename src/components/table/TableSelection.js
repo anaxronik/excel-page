@@ -11,6 +11,7 @@ export class TableSelection {
     this.group.push($element)
     this.currentCell = $element
     $element.addClass(TableSelection.className)
+    $element.focus()
   }
 
   clear() {
