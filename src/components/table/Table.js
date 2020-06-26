@@ -4,6 +4,7 @@ import { $ } from "@core/dom"
 import { TableSelection } from "./TableSelection"
 import { range } from "@core/utils"
 import { nextSelector } from "./table.functions"
+import * as actions from "@/redux/actions"
 
 export class Table extends ExcelComponent {
   static className = "excel__table"
@@ -67,7 +68,8 @@ export class Table extends ExcelComponent {
           $resizeElement.css({ right: "0px" })
 
           // dispatch in store
-          this.$dispatch({ type: "TABLE_RESIZE", id: index, value: newWidth })
+          let data = { id: index, value: newWidth }
+          this.$dispatch(actions.tableResize(data))
         }
         if (resizeType === "row") {
           $resizeElement.css({ bottom: "0px" })
@@ -119,10 +121,6 @@ export class Table extends ExcelComponent {
 
     this.$on("formula:done", () => {
       this.selection.currentCell.focus()
-    })
-
-    this.$subscribe((state) => {
-      console.log("TableState:", state)
     })
   }
 
