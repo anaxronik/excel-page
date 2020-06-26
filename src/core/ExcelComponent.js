@@ -6,8 +6,17 @@ export class ExcelComponent extends DomListener {
     this.name = options.name || ""
     this.emitter = options.emitter
     this.unsubscribers = []
+    this.store = options.store
 
     this.prepare()
+  }
+
+  $dispatch(action) {
+    this.store.dispatch(action)
+  }
+
+  $subscribe(fn) {
+    this.storeSub = this.store.subscribe(fn)
   }
 
   // возвращает шаблон компонента
@@ -24,6 +33,7 @@ export class ExcelComponent extends DomListener {
   destroy() {
     this.removeDomListeners()
     this.unsubscribers.forEach((unsub) => unsub())
+    this.storeSub.unsubscribe()
   }
 
   // метод запускаемый до init
