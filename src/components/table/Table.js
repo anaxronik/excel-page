@@ -20,30 +20,7 @@ export class Table extends ExcelComponent {
     return createTable(100)
   }
 
-  onMousedown(event) {
-    // selecting cells
-    if (event.target.dataset.type === "cell") {
-      const $targetCell = $(event.target)
-      if (event.shiftKey) {
-        const targetCellID = $targetCell.id(true)
-        const currentCellID = this.selection.currentCell.id(true)
-
-        const cols = range(currentCellID.col, targetCellID.col)
-        const rows = range(currentCellID.row, targetCellID.row)
-
-        const ids = cols.reduce((acc, col) => {
-          rows.forEach((row) => acc.push(`${row}:${col}`))
-          return acc
-        }, [])
-
-        const $cells = ids.map((id) => this.$root.find(`[data-id="${id}"]`))
-        this.selection.selectGroup($cells)
-      } else {
-        this.selectCell($targetCell)
-      }
-    }
-
-    // resizing
+  resizeTable(event) {
     if (event.target.dataset.resize) {
       // при нажатии на ресайзер
       const $resizeElement = $(event.target)
@@ -51,7 +28,7 @@ export class Table extends ExcelComponent {
       const coords = $parentElement.getCoords()
       const index = $parentElement.$element.dataset.col
       const resizeType = event.target.dataset.resize
-      let newWidth
+      let newWidth = 0
 
       $resizeElement.css({ opacity: 1 })
 
@@ -88,12 +65,42 @@ export class Table extends ExcelComponent {
             .querySelectorAll(`[data-col="${index}"]`)
             .forEach((el) => (el.style.width = newWidth + "px"))
           $resizeElement.css({ right: "0px" })
+
+          // dispatch in store
+          this.$dispatch({ type: "TABLE_RESIZE", id: index, value: newWidth })
         }
         if (resizeType === "row") {
           $resizeElement.css({ bottom: "0px" })
         }
       }
     }
+  }
+
+  onMousedown(event) {
+    // selecting cells
+    if (event.target.dataset.type === "cell") {
+      const $targetCell = $(event.target)
+      if (event.shiftKey) {
+        const targetCellID = $targetCell.id(true)
+        const currentCellID = this.selection.currentCell.id(true)
+
+        const cols = range(currentCellID.col, targetCellID.col)
+        const rows = range(currentCellID.row, targetCellID.row)
+
+        const ids = cols.reduce((acc, col) => {
+          rows.forEach((row) => acc.push(`${row}:${col}`))
+          return acc
+        }, [])
+
+        const $cells = ids.map((id) => this.$root.find(`[data-id="${id}"]`))
+        this.selection.selectGroup($cells)
+      } else {
+        this.selectCell($targetCell)
+      }
+    }
+
+    // resizing
+    this.resizeTable(event)
   }
 
   prepare() {
