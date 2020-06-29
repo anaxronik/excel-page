@@ -5,18 +5,21 @@ const CODES = {
 let DEFAULT_WIDTH = 120
 let DEFAULT_HEIGHT = 24
 
-function createCell(colState, row) {
+function createCell(state, row) {
   return function (_, col) {
-    const width = getWidth(colState, col)
+    let id = `${row}:${col}`
+    let text = state.dataState[id] || ""
+    const width = getWidth(state.colState, col)
+
     return `
       <div 
         class="cell" 
         contenteditable 
         data-col="${col}"
         data-type="cell"
-        data-id="${row}:${col}"
+        data-id="${id}"
         style="width:${width}"
-      ></div>
+      >${text}</div>
     `
   }
 }
@@ -90,7 +93,7 @@ export function createTable(rowsCount = 15, state = {}) {
   for (let row = 0; row < rowsCount; row++) {
     const cells = new Array(colsCount)
       .fill("")
-      .map(createCell(colState, row))
+      .map(createCell(state, row))
       .join("")
 
     rows.push(createRow(row + 1, cells, rowState))

@@ -1,18 +1,29 @@
-import { TABLE_RESIZE } from "@/redux/types"
+import { CHANGE_TEXT, TABLE_RESIZE } from "@/redux/types"
 
 export function rootReducer(state, action = {}) {
-  let currentState
-  let field
+  let prevState
+
   if (action.type) {
     switch (action.type) {
       default:
         return state
 
       case TABLE_RESIZE:
-        field = action.data.type === "col" ? "colState" : "rowState"
-        currentState = state[field]
+        let stateType = action.data.type === "col" ? "colState" : "rowState"
+        let currentState = state[stateType]
         currentState[action.data.id] = action.data.value
-        return { ...state } // id, value
+
+        return { ...state }
+
+      case CHANGE_TEXT:
+        prevState = state["dataState"] || {}
+        prevState[action.data.id] = action.data.value
+
+        return {
+          ...state,
+          currentText: action.data.value,
+          dataState: prevState,
+        }
     }
   }
 
