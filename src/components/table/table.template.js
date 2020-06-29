@@ -3,6 +3,7 @@ const CODES = {
   Z: 90,
 }
 let DEFAULT_WIDTH = 120
+let DEFAULT_HEIGHT = 24
 
 function createCell(colState, row) {
   return function (_, col) {
@@ -34,8 +35,15 @@ function createColumn({ col, index, width }) {
   `
 }
 
-function createRow(index, content) {
-  return `<div class="row" data-type="resizable">
+function createRow(index, content, rowState) {
+  let height = (rowState[index] ? rowState[index] : DEFAULT_HEIGHT) + "px"
+  return `
+    <div
+      class="row" 
+      data-type="resizable" 
+      data-row="${index}"
+      style="height:${height}"
+    >
       <div class="row-info">
         ${index ? index : ""}
         ${index ? '<div class="row-resize" data-resize="row"></div>' : ""}
@@ -66,6 +74,7 @@ export function createTable(rowsCount = 15, state = {}) {
   const colsCount = CODES.Z - CODES.A + 1 // Compute cols count
   const rows = []
   const colState = state.colState
+  const rowState = state.rowState
 
   // создание первой инфо строки
   const cols = new Array(colsCount)
@@ -75,7 +84,7 @@ export function createTable(rowsCount = 15, state = {}) {
     .map(createColumn)
     .join("")
 
-  rows.push(createRow(null, cols))
+  rows.push(createRow(null, cols, rowState))
 
   //создание остальных строк и ячеек в них
   for (let row = 0; row < rowsCount; row++) {
@@ -84,7 +93,7 @@ export function createTable(rowsCount = 15, state = {}) {
       .map(createCell(colState, row))
       .join("")
 
-    rows.push(createRow(row + 1, cells))
+    rows.push(createRow(row + 1, cells, rowState))
   }
 
   return rows.join("")

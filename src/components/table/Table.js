@@ -27,7 +27,8 @@ export class Table extends ExcelComponent {
       const $resizeElement = $(event.target)
       const $parentElement = $resizeElement.closest('[data-type="resizable"]')
       const coords = $parentElement.getCoords()
-      const index = $parentElement.$element.dataset.col
+      const colIndex = $parentElement.$element.dataset.col
+      const rowIndex = $parentElement.$element.dataset.row
       const resizeType = event.target.dataset.resize
       let newWidth = 0
 
@@ -52,6 +53,8 @@ export class Table extends ExcelComponent {
           const delta = e.pageY - coords.bottom
           const newHeight = coords.height + delta
           $parentElement.css({ height: newHeight + "px" })
+          let data = { id: rowIndex, value: newHeight, type: resizeType }
+          this.$dispatch(actions.tableResize(data))
         }
       }
 
@@ -63,12 +66,12 @@ export class Table extends ExcelComponent {
 
         if (resizeType === "col") {
           document
-            .querySelectorAll(`[data-col="${index}"]`)
+            .querySelectorAll(`[data-col="${colIndex}"]`)
             .forEach((el) => (el.style.width = newWidth + "px"))
           $resizeElement.css({ right: "0px" })
 
           // dispatch in store
-          let data = { id: index, value: newWidth }
+          let data = { id: colIndex, value: newWidth, type: resizeType }
           this.$dispatch(actions.tableResize(data))
         }
         if (resizeType === "row") {
